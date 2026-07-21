@@ -1,6 +1,6 @@
 """
 Monday.com Business Intelligence Agent
-Main Streamlit Application
+Main Streamlit Application — Dark Glassmorphism Edition
 """
 
 import os
@@ -23,7 +23,7 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ─── Global ─── */
 html, body, [class*="css"] {
@@ -31,7 +31,10 @@ html, body, [class*="css"] {
 }
 
 .stApp {
-    background: #f8fafc;
+    background: #0d1117;
+    background-image:
+        radial-gradient(ellipse 80% 50% at 20% -20%, rgba(99,102,241,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(139,92,246,0.12) 0%, transparent 55%);
     min-height: 100vh;
 }
 
@@ -41,208 +44,591 @@ html, body, [class*="css"] {
 
 /* ─── Sidebar ─── */
 section[data-testid="stSidebar"] {
-    background: #ffffff !important;
-    border-right: 1px solid #e2e8f0;
+    background: linear-gradient(180deg, #080812 0%, #0d0d20 60%, #0a0a1a 100%) !important;
+    border-right: 1px solid rgba(99,102,241,0.25) !important;
+    box-shadow: 4px 0 30px rgba(99,102,241,0.08);
 }
 
 section[data-testid="stSidebar"] .block-container {
-    padding-top: 1rem;
+    padding-top: 0;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+/* ─── Sidebar Brand ─── */
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.5rem 1rem 0.75rem;
+    background: linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(139,92,246,0.06) 100%);
+    border-bottom: 1px solid rgba(99,102,241,0.15);
+    margin-bottom: 0;
+}
+
+.sidebar-logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    flex-shrink: 0;
+}
+
+.sidebar-logo-text .title {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.15rem;
+    line-height: 1;
+    letter-spacing: -0.4px;
+}
+
+.sidebar-logo-text .subtitle {
+    background: linear-gradient(90deg, #6366f1, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-top: 0.25rem;
+}
+
+/* ─── Sidebar Status Badge ─── */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.status-pill.connected {
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: #22c55e;
+}
+
+.status-pill.disconnected {
+    background: rgba(248,113,113,0.12);
+    border: 1px solid rgba(248,113,113,0.3);
+    color: #f87171;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* ─── Sidebar Stats Cards ─── */
+.stat-mini {
+    background: rgba(22,27,39,0.8);
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-mini-label {
+    color: #64748b;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-mini-value {
+    color: #a5b4fc;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+/* ─── Config label ─── */
+.config-label {
+    color: #64748b;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+    padding: 0 0.25rem;
 }
 
 /* ─── Header ─── */
 .bi-header {
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 3rem 0 2rem 0;
+    padding: 3rem 2.5rem 2.5rem 2.5rem;
     margin-bottom: 2rem;
-    backdrop-filter: none;
-    box-shadow: none;
     position: relative;
-    overflow: visible;
+    background: linear-gradient(135deg, rgba(10,10,26,0.95) 0%, rgba(20,16,40,0.9) 100%);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 24px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    box-shadow:
+        0 0 0 1px rgba(99,102,241,0.1),
+        0 40px 80px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Glow orbs inside header */
+.bi-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 65%);
+    pointer-events: none;
+}
+
+.bi-header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 320px; height: 220px;
+    background: radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 65%);
+    pointer-events: none;
+}
+
+/* top accent line */
+.bi-header-line {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #6366f1, #8b5cf6, #a78bfa, transparent);
 }
 
 .bi-header h1 {
-    color: #0f172a;
-    font-size: 3.2rem;
+    color: #ffffff;
+    font-size: 3.4rem;
     font-weight: 900;
-    margin: 0;
-    background: none;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: unset;
-    letter-spacing: -1px;
-    line-height: 1.1;
+    margin: 0 0 0.9rem 0;
+    letter-spacing: -2px;
+    line-height: 1.0;
     position: relative;
     z-index: 1;
+    text-shadow: 0 2px 40px rgba(99,102,241,0.25);
 }
 
 .bi-header h1 .highlight {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(120deg, #818cf8 0%, #a78bfa 40%, #c4b5fd 70%, #e0d7ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(139,92,246,0.5));
 }
 
 .bi-header p {
-    color: #64748b;
+    color: rgba(255,255,255,0.6);
     font-size: 1.05rem;
-    margin: 1.2rem 0 0;
-    font-weight: 500;
+    font-weight: 400;
+    line-height: 1.65;
+    max-width: 620px;
     position: relative;
     z-index: 1;
-    background: none;
-    -webkit-background-clip: unset;
-    line-height: 1.6;
+}
+
+.bi-header p .accent {
+    color: #c4b5fd;
+    font-weight: 700;
+}
+
+/* Header divider rule */
+.bi-header-rule {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(99,102,241,0.3), rgba(255,255,255,0.04));
+    margin: 1.5rem 0 0;
+    position: relative;
+    z-index: 1;
 }
 
 /* ─── Metric Cards ─── */
-.metric-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
 .metric-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.8rem 1.5rem;
-    transition: all 0.3s ease;
+    background: rgba(22,27,39,0.7);
+    border: 1px solid rgba(99,102,241,0.12);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(15,23,42,0.08);
+    backdrop-filter: blur(10px);
 }
 
 .metric-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(99,102,241,0.05), transparent);
-    animation: shimmer 3s infinite;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa);
+    opacity: 0;
+    transition: opacity 0.35s ease;
 }
 
 .metric-card:hover {
-    border-color: #6366f1;
-    background: #ffffff;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(99,102,241,0.12);
+    border-color: rgba(99,102,241,0.35);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(99,102,241,0.15), 0 0 0 1px rgba(99,102,241,0.1);
+}
+
+.metric-card:hover::before { opacity: 1; }
+
+.metric-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    display: block;
 }
 
 .metric-label {
     color: #64748b;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
 }
 
 .metric-value {
-    color: #0f172a;
-    font-size: 1.8rem;
+    color: #e2e8f0;
+    font-size: 1.9rem;
     font-weight: 800;
     line-height: 1;
+    letter-spacing: -1px;
 }
 
 .metric-sub {
-    color: #94a3b8;
-    font-size: 0.75rem;
+    color: #475569;
+    font-size: 0.72rem;
     margin-top: 0.5rem;
+    font-weight: 500;
 }
 
-.metric-up { color: #22c55e; }
-.metric-down { color: #ef4444; }
+.metric-up { color: #22c55e; font-weight: 700; }
+.metric-down { color: #ef4444; font-weight: 700; }
 
-@keyframes shimmer {
-    0% { left: -100%; }
-    100% { left: 100%; }
+/* ─── HERO CHAT SECTION ─── */
+.chat-hero-wrapper {
+    background: rgba(15,20,35,0.85);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(99,102,241,0.06), 0 40px 80px rgba(0,0,0,0.4);
+    backdrop-filter: blur(20px);
+    position: relative;
+    margin-bottom: 2rem;
 }
 
-/* ─── Chat Container ─── */
+.chat-hero-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa, #8b5cf6, #6366f1);
+    background-size: 200% 100%;
+    animation: gradientShift 4s linear infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+}
+
+.chat-title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid rgba(99,102,241,0.12);
+    background: rgba(10,10,26,0.5);
+}
+
+.chat-title-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.chat-ai-avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+    flex-shrink: 0;
+}
+
+.chat-title-text .name {
+    color: #e2e8f0;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.chat-title-text .status {
+    color: #22c55e;
+    font-size: 0.65rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.chat-title-text .status::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: blink 2s infinite;
+}
+
+/* ─── Quick Query Chips ─── */
+.chips-bar {
+    padding: 0.8rem 1.5rem;
+    border-bottom: 1px solid rgba(99,102,241,0.08);
+    background: rgba(13,17,23,0.4);
+}
+
+.chips-label {
+    color: #475569;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+/* ─── Chat Messages ─── */
 .chat-container {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
     padding: 1.5rem;
-    min-height: 400px;
-    max-height: 600px;
+    min-height: 380px;
+    max-height: 520px;
     overflow-y: auto;
-    margin-bottom: 1rem;
-    box-shadow: 0 1px 3px rgba(15,23,42,0.08);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99,102,241,0.3) transparent;
 }
 
-/* ─── Chat Bubbles ─── */
+.chat-container::-webkit-scrollbar { width: 4px; }
+.chat-container::-webkit-scrollbar-track { background: transparent; }
+.chat-container::-webkit-scrollbar-thumb {
+    background: rgba(99,102,241,0.3);
+    border-radius: 2px;
+}
+
 .msg-user {
     display: flex;
     justify-content: flex-end;
-    margin: 0.8rem 0;
-    animation: slideInRight 0.3s ease;
+    margin: 0.75rem 0;
+    animation: slideInRight 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
 .msg-user-bubble {
-    background: #6366f1;
+    background: linear-gradient(135deg, #6366f1, #7c3aed);
     color: white;
     border-radius: 18px 18px 4px 18px;
-    padding: 0.75rem 1.2rem;
-    max-width: 75%;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    box-shadow: 0 2px 8px rgba(99,102,241,0.2);
+    padding: 0.8rem 1.2rem;
+    max-width: 72%;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.35);
 }
 
 .msg-agent {
     display: flex;
     justify-content: flex-start;
-    margin: 0.8rem 0;
-    animation: slideInLeft 0.3s ease;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0.75rem 0;
+    animation: slideInLeft 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-
-.msg-agent-bubble {
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    color: #0f172a;
-    border-radius: 18px 18px 18px 4px;
-    padding: 0.75rem 1.2rem;
-    max-width: 80%;
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-.msg-agent-bubble strong { color: #6366f1; }
 
 .agent-avatar {
-    width: 32px;
-    height: 32px;
-    background: #6366f1;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 0.6rem;
+    font-size: 0.8rem;
     flex-shrink: 0;
+    margin-top: 2px;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+}
+
+.msg-agent-bubble {
+    background: rgba(30,37,53,0.9);
+    border: 1px solid rgba(99,102,241,0.15);
+    color: #e2e8f0;
+    border-radius: 4px 18px 18px 18px;
+    padding: 0.8rem 1.2rem;
+    max-width: 78%;
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+
+.msg-agent-bubble strong { color: #a5b4fc; }
+.msg-agent-bubble em { color: #94a3b8; }
+.msg-agent-bubble code {
+    background: rgba(99,102,241,0.15);
+    color: #c4b5fd;
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    font-size: 0.82rem;
+}
+
+.chat-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    gap: 1rem;
+    color: #475569;
+}
+
+.chat-empty-icon {
+    font-size: 3rem;
+    opacity: 0.5;
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.chat-empty-text {
     font-size: 0.9rem;
-    color: white;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 300px;
+}
+
+/* ─── Chat Input Area ─── */
+.chat-input-area {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(99,102,241,0.12);
+    background: rgba(10,10,26,0.6);
 }
 
 @keyframes slideInRight {
-    from { opacity: 0; transform: translateX(20px); }
+    from { opacity: 0; transform: translateX(15px); }
     to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideInLeft {
-    from { opacity: 0; transform: translateX(-20px); }
+    from { opacity: 0; transform: translateX(-15px); }
     to { opacity: 1; transform: translateX(0); }
 }
 
-/* ─── Quick Query Pills ─── */
-.quick-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+/* ─── Input Overrides ─── */
+.stTextInput input, .stTextArea textarea {
+    background: rgba(22,27,39,0.9) !important;
+    border: 1px solid rgba(99,102,241,0.2) !important;
+    border-radius: 12px !important;
+    color: #e2e8f0 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.9rem !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.stTextInput input::placeholder, .stTextArea textarea::placeholder {
+    color: #475569 !important;
+}
+
+.stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.12), 0 0 20px rgba(99,102,241,0.08) !important;
+}
+
+/* ─── Buttons ─── */
+.stButton > button {
+    background: linear-gradient(135deg, #6366f1, #7c3aed) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-family: 'Inter', sans-serif !important;
+    transition: all 0.25s ease !important;
+    font-size: 0.88rem !important;
+    box-shadow: 0 4px 12px rgba(99,102,241,0.3) !important;
+    letter-spacing: 0.01em !important;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, #4f46e5, #6d28d9) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(99,102,241,0.45) !important;
+}
+
+.stButton > button:active {
+    transform: translateY(0) !important;
+}
+
+/* ─── Divider ─── */
+hr { border-color: rgba(99,102,241,0.1) !important; }
+
+/* ─── Expander ─── */
+.streamlit-expanderHeader {
+    background: rgba(22,27,39,0.6) !important;
+    border-radius: 10px !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(99,102,241,0.12) !important;
+    font-weight: 600 !important;
+}
+
+.streamlit-expanderHeader * { color: #e2e8f0 !important; opacity: 1 !important; }
+[role="group"] { color: #e2e8f0 !important; }
+[role="group"] * { color: #e2e8f0 !important; opacity: 1 !important; }
+[role="group"] p { color: #e2e8f0 !important; opacity: 1 !important; }
+
+/* ─── Loading Dots ─── */
+.loading-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6366f1;
+    animation: pulse 1.2s ease-in-out infinite;
+    margin: 0 2px;
+}
+.loading-dot:nth-child(2) { animation-delay: 0.2s; background: #8b5cf6; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; background: #a78bfa; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.75); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ─── Tables ─── */
+.dataframe {
+    background: rgba(22,27,39,0.8) !important;
+    border: 1px solid rgba(99,102,241,0.12) !important;
+    border-radius: 12px !important;
 }
 
 /* ─── Status Badges ─── */
@@ -250,95 +636,65 @@ section[data-testid="stSidebar"] .block-container {
     display: inline-block;
     padding: 0.2rem 0.6rem;
     border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
-.badge-green { background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
-.badge-yellow { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
-.badge-red { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
-.badge-blue { background: rgba(96,165,250,0.15); color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
+.badge-green  { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+.badge-yellow { background: rgba(251,191,36,0.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+.badge-red    { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+.badge-blue   { background: rgba(96,165,250,0.12);  color: #60a5fa; border: 1px solid rgba(96,165,250,0.25); }
 
-/* ─── Sidebar Config ─── */
-.config-label {
-    color: #64748b;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 0.4rem;
+/* ─── Metric widget overrides ─── */
+[data-testid="stMetricValue"] {
+    color: #e2e8f0 !important;
+    font-weight: 800 !important;
+    font-size: 1.6rem !important;
 }
 
-/* ─── Input ─── */
-.stTextInput input, .stTextArea textarea {
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 8px !important;
-    color: #0f172a !important;
-    font-family: 'Inter', sans-serif !important;
+[data-testid="stMetricLabel"] {
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
 }
 
-.stTextInput input:focus, .stTextArea textarea:focus {
-    border-color: #6366f1 !important;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.08) !important;
-}
-
-/* ─── Buttons ─── */
-.stButton > button {
-    background: #6366f1 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-weight: 700 !important;
-    font-family: 'Inter', sans-serif !important;
+[data-testid="metric-container"] {
+    background: rgba(22,27,39,0.7) !important;
+    border: 1px solid rgba(99,102,241,0.12) !important;
+    border-radius: 16px !important;
+    padding: 1.25rem 1.5rem !important;
+    backdrop-filter: blur(10px) !important;
     transition: all 0.3s ease !important;
-    font-size: 0.95rem !important;
-    position: relative !important;
-    overflow: hidden !important;
-    box-shadow: 0 2px 8px rgba(99,102,241,0.15) !important;
 }
 
-.stButton > button:hover {
-    background: #4f46e5 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 16px rgba(99,102,241,0.25) !important;
+[data-testid="metric-container"]:hover {
+    border-color: rgba(99,102,241,0.35) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 20px 40px rgba(99,102,241,0.15) !important;
 }
 
-/* ─── Divider ─── */
-hr { border-color: #e2e8f0 !important; }
-
-/* ─── Expander ─── */
-.streamlit-expanderHeader {
-    background: #f8fafc !important;
-    border-radius: 8px !important;
-    color: #0f172a !important;
+/* ─── Sidebar button overrides (secondary style) ─── */
+section[data-testid="stSidebar"] .stButton > button {
+    background: rgba(99,102,241,0.1) !important;
+    border: 1px solid rgba(99,102,241,0.25) !important;
+    color: #a5b4fc !important;
+    box-shadow: none !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
 }
 
-/* ─── Loading ─── */
-.loading-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #6366f1;
-    animation: pulse 1.2s ease-in-out infinite;
-    margin: 0 2px;
-}
-.loading-dot:nth-child(2) { animation-delay: 0.2s; }
-.loading-dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.3; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.1); }
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background: rgba(99,102,241,0.2) !important;
+    border-color: rgba(99,102,241,0.5) !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.2) !important;
 }
 
-/* ─── Tables ─── */
-.dataframe {
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 8px !important;
+/* ─── Spinner ─── */
+.stSpinner > div {
+    border-color: #6366f1 transparent transparent transparent !important;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -365,25 +721,20 @@ def _try_autoconnect():
         groq_key  = st.secrets.get("GROQ_API_KEY", "")
         wo_id     = st.secrets.get("WO_BOARD_ID", "")
         deals_id  = st.secrets.get("DEALS_BOARD_ID", "")
-        
-        # ─── Validate all required secrets are present ───────────────────────
+
         missing_secrets = []
-        if not token:
-            missing_secrets.append("MONDAY_API_TOKEN")
-        if not groq_key:
-            missing_secrets.append("GROQ_API_KEY")
-        if not wo_id:
-            missing_secrets.append("WO_BOARD_ID")
-        if not deals_id:
-            missing_secrets.append("DEALS_BOARD_ID")
-        
+        if not token:    missing_secrets.append("MONDAY_API_TOKEN")
+        if not groq_key: missing_secrets.append("GROQ_API_KEY")
+        if not wo_id:    missing_secrets.append("WO_BOARD_ID")
+        if not deals_id: missing_secrets.append("DEALS_BOARD_ID")
+
         if missing_secrets:
             st.session_state.connection_error = f"Missing secrets: {', '.join(missing_secrets)}"
             return
-        
+
         os.environ["MONDAY_API_TOKEN"] = token
         os.environ["GROQ_API_KEY"]     = groq_key
-        
+
         agent = BIAgent(wo_id, deals_id)
         wo_df, deals_df = agent.load_data()
         st.session_state.agent       = agent
@@ -393,11 +744,11 @@ def _try_autoconnect():
         st.session_state.messages    = [{
             "role": "assistant",
             "content": (
-                f"Connected to Monday.com! Loaded **{len(wo_df)} work orders** "
-                f"and **{len(deals_df)} deals**.\n\n"
-                "I'm your BI analyst. Ask me anything — pipeline health, sector performance, "
-                "revenue breakdown, at-risk deals — or click **Generate Leadership Brief** "
-                "for an instant board-ready update."
+                f"👋 Hey! I'm connected to Monday.com — loaded **{len(wo_df)} work orders** "
+                f"and **{len(deals_df)} deals** into memory.\n\n"
+                "I can answer anything about your pipeline: deal health, sector performance, "
+                "revenue breakdown, at-risk accounts, or generate a **Leadership Brief** for your board. "
+                "What would you like to explore first?"
             )
         }]
     except Exception as e:
@@ -409,65 +760,54 @@ if not st.session_state.data_loaded:
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
 
 with st.sidebar:
-    st.markdown("""
-    <style>
-        .sidebar-brand {
-            text-align: left;
-            padding: 1.5rem 1rem;
-            background: transparent;
-            border-radius: 0;
-            border: none;
-            margin-bottom: 1.5rem;
-            animation: none;
-        }
-        
-        .sidebar-brand-title {
-            background: none;
-            -webkit-background-clip: unset;
-            -webkit-text-fill-color: unset;
-            color: #0f172a;
-            font-weight: 800;
-            font-size: 1.3rem;
-            margin: 0;
-            letter-spacing: -0.3px;
-        }
-        
-        .sidebar-brand-subtitle {
-            color: #94a3b8;
-            font-size: 0.75rem;
-            margin-top: 0.3rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-    </style>
-    <div class="sidebar-brand">
-        <div class="sidebar-brand-title">BizIntel</div>
-        <div class="sidebar-brand-subtitle">AI Agent</div>
+    # Logo
+    connected = st.session_state.data_loaded
+    status_class = "connected" if connected else "disconnected"
+    status_text  = "● Live" if connected else "○ Offline"
+
+    st.markdown(f"""
+    <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">📊</div>
+        <div class="sidebar-logo-text">
+            <div class="title">BizIntel</div>
+            <div class="subtitle">AI Agent</div>
+        </div>
+    </div>
+    <div style="padding: 0 1rem 1rem;">
+        <span class="status-pill {status_class}">
+            <span class="status-dot"></span>
+            {status_text}
+        </span>
     </div>
     """, unsafe_allow_html=True)
 
     st.divider()
 
-    # Data Stats
     if st.session_state.data_loaded:
-        wo_df = st.session_state.wo_df
+        wo_df    = st.session_state.wo_df
         deals_df = st.session_state.deals_df
 
         st.markdown('<div class="config-label">📈 Data Overview</div>', unsafe_allow_html=True)
         st.markdown(f"""
-        <div style="color: #94a3b8; font-size: 0.8rem; line-height: 1.8;">
-            📋 Work Orders: <strong style="color:#6366f1">{len(wo_df)}</strong><br>
-            💼 Deals: <strong style="color:#8b5cf6">{len(deals_df)}</strong><br>
-            🕐 Live from Monday.com<br>
-            🔄 Cache: 5 min TTL
+        <div class="stat-mini">
+            <span class="stat-mini-label">📋 Work Orders</span>
+            <span class="stat-mini-value">{len(wo_df)}</span>
+        </div>
+        <div class="stat-mini">
+            <span class="stat-mini-label">💼 Deals</span>
+            <span class="stat-mini-value">{len(deals_df)}</span>
+        </div>
+        <div class="stat-mini">
+            <span class="stat-mini-label">🔄 Cache TTL</span>
+            <span class="stat-mini-value">5 min</span>
         </div>
         """, unsafe_allow_html=True)
 
         st.divider()
 
-        # Leadership Brief Button
-        if st.button("📋 Generate Leadership Brief", use_container_width=True):
+        st.markdown('<div class="config-label">⚡ Actions</div>', unsafe_allow_html=True)
+
+        if st.button("📋 Leadership Brief", use_container_width=True):
             with st.spinner("Generating brief..."):
                 brief = st.session_state.agent.generate_leadership_brief()
                 st.session_state.messages.append({
@@ -479,9 +819,9 @@ with st.sidebar:
         if st.button("🔄 Refresh Data", use_container_width=True):
             st.cache_data.clear()
             st.session_state.data_loaded = False
-            st.session_state.agent = None
-            st.session_state.wo_df = None
-            st.session_state.deals_df = None
+            st.session_state.agent       = None
+            st.session_state.wo_df       = None
+            st.session_state.deals_df    = None
             st.rerun()
 
         if st.button("🗑️ Clear Chat", use_container_width=True):
@@ -491,40 +831,37 @@ with st.sidebar:
 # ─── Main Area ────────────────────────────────────────────────────────────────
 
 st.markdown("""
-<style>
-    .stApp {
-        background-color: #f8fafc;
-    }
-</style>
 <div class="bi-header">
+    <div class="bi-header-line"></div>
     <h1>Business Intelligence<br><span class="highlight">AI Agent</span></h1>
-    <p>Real-time insights from your Monday.com data. Ask questions, get answers instantly.</p>
+    <p>Real-time insights from your Monday.com data. <span class="accent">Ask anything</span> — pipeline health, deal performance, revenue breakdowns — and get instant answers.</p>
+    <div class="bi-header-rule"></div>
 </div>
 """, unsafe_allow_html=True)
 
 # ─── Metrics Row ──────────────────────────────────────────────────────────────
 
 if st.session_state.data_loaded:
-    wo_df = st.session_state.wo_df
+    wo_df    = st.session_state.wo_df
     deals_df = st.session_state.deals_df
 
     total_pipeline = deals_df["value"].sum() if not deals_df.empty else 0
-    total_wo_value = wo_df["value"].sum() if not wo_df.empty else 0
-    open_deals = len(deals_df[deals_df["status"].isin(["Open", "In Progress", "New", "Pending"])]) if not deals_df.empty else 0
-    won_deals = len(deals_df[deals_df["status"] == "Won"]) if not deals_df.empty else 0
-    win_rate = (won_deals / len(deals_df) * 100) if not deals_df.empty and len(deals_df) > 0 else 0
+    total_wo_value = wo_df["value"].sum()    if not wo_df.empty    else 0
+    open_deals  = len(deals_df[deals_df["status"].isin(["Open","In Progress","New","Pending"])]) if not deals_df.empty else 0
+    won_deals   = len(deals_df[deals_df["status"] == "Won"]) if not deals_df.empty else 0
+    win_rate    = (won_deals / len(deals_df) * 100) if not deals_df.empty and len(deals_df) > 0 else 0
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("💰 Total Pipeline", format_currency(total_pipeline) if total_pipeline > 0 else "N/A")
+        st.metric("💰 Total Pipeline",    format_currency(total_pipeline) if total_pipeline > 0 else "N/A")
     with col2:
         st.metric("📋 Work Orders Value", format_currency(total_wo_value) if total_wo_value > 0 else "N/A")
     with col3:
-        st.metric("🎯 Open Deals", f"{open_deals}")
+        st.metric("🎯 Open Deals",        f"{open_deals}")
     with col4:
-        st.metric("✅ Win Rate", f"{win_rate:.1f}%" if win_rate > 0 else "N/A")
+        st.metric("✅ Win Rate",           f"{win_rate:.1f}%" if win_rate > 0 else "N/A")
 
-    st.divider()
+    st.markdown("<div style='margin-bottom: 2rem;'></div>", unsafe_allow_html=True)
 
 # ─── Not Connected Banner ─────────────────────────────────────────────────────
 
@@ -532,110 +869,126 @@ if not st.session_state.data_loaded:
     if st.session_state.connection_error:
         st.markdown("""
         <div style="
-            background: rgba(248,113,113,0.08);
-            border: 1px solid rgba(248,113,113,0.3);
-            border-radius: 12px;
+            background: rgba(248,113,113,0.06);
+            border: 1px solid rgba(248,113,113,0.25);
+            border-radius: 16px;
             padding: 2rem;
             margin: 2rem 0;
         ">
-            <div style="font-size: 1.5rem; margin-bottom: 1rem;">❌ Connection Failed</div>
-            <div style="color: #f87171; font-size: 0.95rem; margin-bottom: 1rem; font-family: 'Courier New', monospace;">
-                <strong>Error:</strong> """ + st.session_state.connection_error.replace("<", "&lt;").replace(">", "&gt;") + """
+            <div style="font-size: 1.4rem; margin-bottom: 0.75rem; color:#f87171; font-weight:700;">❌ Connection Failed</div>
+            <div style="color: #f87171; font-size: 0.9rem; margin-bottom: 1rem; font-family: 'Courier New', monospace; background: rgba(248,113,113,0.06); padding: 0.75rem; border-radius: 8px;">
+                """ + st.session_state.connection_error.replace("<", "&lt;").replace(">", "&gt;") + """
             </div>
-            <div style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6;">
-                <strong>What to check:</strong><br>
-                ✓ Verify all API keys are set in .streamlit/secrets.toml (local) or deployment platform secrets<br>
-                ✓ Required secrets: <code>MONDAY_API_TOKEN</code>, <code>GROQ_API_KEY</code>, <code>WO_BOARD_ID</code>, <code>DEALS_BOARD_ID</code><br>
-                ✓ Check that Monday.com and Groq API keys are valid and not expired<br>
-                ✓ Ensure board IDs are correct and accessible with your API token
+            <div style="color: #94a3b8; font-size: 0.85rem; line-height: 1.8;">
+                <strong style="color:#e2e8f0">What to check:</strong><br>
+                ✓ All API keys set in <code style="background:rgba(99,102,241,0.15);color:#c4b5fd;padding:0.1rem 0.3rem;border-radius:3px;">.streamlit/secrets.toml</code><br>
+                ✓ Required: <code style="background:rgba(99,102,241,0.15);color:#c4b5fd;padding:0.1rem 0.3rem;border-radius:3px;">MONDAY_API_TOKEN</code>, <code style="background:rgba(99,102,241,0.15);color:#c4b5fd;padding:0.1rem 0.3rem;border-radius:3px;">GROQ_API_KEY</code>, <code style="background:rgba(99,102,241,0.15);color:#c4b5fd;padding:0.1rem 0.3rem;border-radius:3px;">WO_BOARD_ID</code>, <code style="background:rgba(99,102,241,0.15);color:#c4b5fd;padding:0.1rem 0.3rem;border-radius:3px;">DEALS_BOARD_ID</code><br>
+                ✓ API keys valid and not expired<br>
+                ✓ Board IDs accessible with your token
             </div>
         </div>
         """, unsafe_allow_html=True)
     else:
         st.markdown("""
         <div style="
-            background: rgba(99,102,241,0.08);
+            background: rgba(99,102,241,0.06);
             border: 1px solid rgba(99,102,241,0.2);
-            border-radius: 12px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 3rem;
             text-align: center;
             margin: 2rem 0;
         ">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">⏳</div>
-            <div style="color: #a78bfa; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">
-                Connecting to Monday.com...
-            </div>
-            <div style="color: #64748b; font-size: 0.9rem;">
-                Loading your boards automatically from configuration.
-            </div>
+            <div style="font-size: 3.5rem; margin-bottom: 1rem; animation: floatIcon 3s ease-in-out infinite;">⏳</div>
+            <div style="color: #a78bfa; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Connecting to Monday.com...</div>
+            <div style="color: #475569; font-size: 0.85rem;">Loading your boards automatically from configuration.</div>
         </div>
         """, unsafe_allow_html=True)
 
-# ─── Chat Interface ───────────────────────────────────────────────────────────
+# ─── HERO CHAT INTERFACE ───────────────────────────────────────────────────────
 
 if st.session_state.data_loaded:
 
-    # Quick query suggestions
-    st.markdown("**💡 Quick queries:**")
-    quick_cols = st.columns(4)
+    # Quick query chips above the hero panel
     quick_queries = [
         "Pipeline overview",
         "Energy sector performance",
         "Win rate this quarter",
         "Top 5 open deals",
-    ]
-    quick_clicked = None
-    for i, (col, query) in enumerate(zip(quick_cols, quick_queries)):
-        with col:
-            if st.button(query, key=f"quick_{i}", use_container_width=True):
-                quick_clicked = query
-
-    more_cols = st.columns(4)
-    more_queries = [
         "Work orders by status",
         "Revenue by sector",
         "At-risk deals",
         "Leadership brief",
     ]
-    for i, (col, query) in enumerate(zip(more_cols, more_queries)):
-        with col:
-            if st.button(query, key=f"more_{i}", use_container_width=True):
+
+    quick_clicked = None
+
+    # ── Open the hero chat card ──
+    st.markdown("""
+    <div class="chat-hero-wrapper">
+        <div class="chat-title-bar">
+            <div class="chat-title-left">
+                <div class="chat-ai-avatar">🤖</div>
+                <div class="chat-title-text">
+                    <div class="name">BizIntel AI Assistant</div>
+                    <div class="status">Online · Ready to analyse</div>
+                </div>
+            </div>
+        </div>
+        <div class="chips-bar">
+            <div class="chips-label">⚡ Quick queries</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Quick-query buttons rendered by Streamlit (inside the visual card via CSS overlap trick)
+    chip_cols = st.columns(4)
+    for i, query in enumerate(quick_queries[:4]):
+        with chip_cols[i % 4]:
+            if st.button(query, key=f"chip_{i}", use_container_width=True):
                 quick_clicked = query
 
-    st.divider()
+    chip_cols2 = st.columns(4)
+    for i, query in enumerate(quick_queries[4:]):
+        with chip_cols2[i % 4]:
+            if st.button(query, key=f"chip2_{i}", use_container_width=True):
+                quick_clicked = query
 
-    # Chat messages
+    st.markdown("<div style='margin-bottom:0.5rem;'></div>", unsafe_allow_html=True)
+
+    # ── Build and render chat messages ──
     chat_html = '<div class="chat-container" id="chat-box">'
-    for msg in st.session_state.messages:
-        if msg["role"] == "user":
-            chat_html += f'''
-            <div class="msg-user">
-                <div class="msg-user-bubble">{msg["content"]}</div>
-            </div>'''
-        else:
-            import html as html_lib
-            content = msg["content"].replace("\n", "<br>")
-            # Make **text** bold
-            content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
-            # Make *text* italic
-            content = re.sub(r'\*(.*?)\*', r'<em>\1</em>', content)
-            chat_html += f'''
-            <div class="msg-agent">
-                <div class="agent-avatar">🤖</div>
-                <div class="msg-agent-bubble">{content}</div>
-            </div>'''
 
     if not st.session_state.messages:
-        chat_html += '''
-        <div style="text-align:center; padding: 3rem; color: #475569;">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;">💬</div>
-            <div>Ask me anything about your business data...</div>
-        </div>'''
+        chat_html += """
+        <div class="chat-empty">
+            <div class="chat-empty-icon">💬</div>
+            <div class="chat-empty-text">
+                Ask me anything about your business data.<br>
+                <span style="color:#6366f1; font-weight:600;">I'm ready to analyse your pipeline.</span>
+            </div>
+        </div>"""
+    else:
+        for msg in st.session_state.messages:
+            if msg["role"] == "user":
+                chat_html += f'''
+                <div class="msg-user">
+                    <div class="msg-user-bubble">{msg["content"]}</div>
+                </div>'''
+            else:
+                content = msg["content"].replace("\n", "<br>")
+                content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
+                content = re.sub(r'\*(.*?)\*',     r'<em>\1</em>',         content)
+                content = re.sub(r'`(.*?)`',       r'<code>\1</code>',     content)
+                chat_html += f'''
+                <div class="msg-agent">
+                    <div class="agent-avatar">🤖</div>
+                    <div class="msg-agent-bubble">{content}</div>
+                </div>'''
 
     chat_html += '</div>'
     st.markdown(chat_html, unsafe_allow_html=True)
 
-    # Auto-scroll script
+    # Auto-scroll
     st.markdown("""
     <script>
         const chatBox = document.getElementById('chat-box');
@@ -643,20 +996,22 @@ if st.session_state.data_loaded:
     </script>
     """, unsafe_allow_html=True)
 
-    # Input
+    # ── Chat Input ──
+    st.markdown('<div class="chat-input-area" style="margin-top:-0.5rem;">', unsafe_allow_html=True)
     with st.form(key="chat_form", clear_on_submit=True):
-        cols = st.columns([6, 1])
+        cols = st.columns([7, 1])
         with cols[0]:
             user_input = st.text_input(
-                "Ask your business question...",
-                placeholder="How's our pipeline looking for energy sector this quarter?",
+                "Message",
+                placeholder="Ask anything — 'How's our pipeline?', 'Top deals this month?', 'At-risk accounts?'",
                 label_visibility="collapsed",
                 key="chat_input"
             )
         with cols[1]:
-            submitted = st.form_submit_button("Send →", use_container_width=True)
+            submitted = st.form_submit_button("Send ➤", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # Process input
+    # ── Process query ──
     query_to_process = None
     if submitted and user_input:
         query_to_process = user_input
@@ -665,8 +1020,7 @@ if st.session_state.data_loaded:
 
     if query_to_process:
         st.session_state.messages.append({"role": "user", "content": query_to_process})
-
-        with st.spinner("Analyzing your data..."):
+        with st.spinner("Analysing your data..."):
             try:
                 response = st.session_state.agent.chat(
                     query_to_process,
@@ -676,27 +1030,23 @@ if st.session_state.data_loaded:
             except Exception as e:
                 st.session_state.messages.append({
                     "role": "assistant",
-                    "content": f"⚠️ Error: {str(e)}"
+                    "content": f"⚠️ **Error:** {str(e)}"
                 })
         st.rerun()
 
-    # Data Preview Expanders
+    # ── Data Preview Expanders ──
+    st.markdown("<div style='margin-top:1.5rem;'></div>", unsafe_allow_html=True)
+
     with st.expander("🔍 Preview Work Orders Data"):
         if st.session_state.wo_df is not None and not st.session_state.wo_df.empty:
             display_cols = [c for c in st.session_state.wo_df.columns if c != "_raw"]
-            st.dataframe(
-                st.session_state.wo_df[display_cols].head(20),
-                use_container_width=True
-            )
+            st.dataframe(st.session_state.wo_df[display_cols].head(20), use_container_width=True)
         else:
             st.info("No work orders data loaded")
 
     with st.expander("🔍 Preview Deals Data"):
         if st.session_state.deals_df is not None and not st.session_state.deals_df.empty:
             display_cols = [c for c in st.session_state.deals_df.columns if c != "_raw"]
-            st.dataframe(
-                st.session_state.deals_df[display_cols].head(20),
-                use_container_width=True
-            )
+            st.dataframe(st.session_state.deals_df[display_cols].head(20), use_container_width=True)
         else:
             st.info("No deals data loaded")

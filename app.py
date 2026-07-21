@@ -51,28 +51,70 @@ section[data-testid="stSidebar"] .block-container {
 
 /* ─── Header ─── */
 .bi-header {
-    background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.1) 100%);
-    border: 1px solid rgba(99,102,241,0.2);
-    border-radius: 16px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 1.5rem;
-    backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, rgba(99,102,241,0.25) 0%, rgba(168,85,247,0.15) 50%, rgba(59,130,246,0.1) 100%);
+    border: 2px solid rgba(99,102,241,0.4);
+    border-radius: 20px;
+    padding: 2.5rem 2.5rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(30px);
+    box-shadow: 0 20px 60px rgba(99,102,241,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+    animation: headerGlow 3s ease-in-out infinite;
+}
+
+.bi-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(168,85,247,0.1) 0%, transparent 70%);
+    animation: bgShift 8s ease-in-out infinite;
+    pointer-events: none;
 }
 
 .bi-header h1 {
     color: #e2e8f0;
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: 2.2rem;
+    font-weight: 800;
     margin: 0;
-    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #34d399 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    animation: titlePulse 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+.bi-header p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    margin: 0.8rem 0 0;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.bi-header p {
-    color: #94a3b8;
-    font-size: 0.9rem;
-    margin: 0.3rem 0 0;
+@keyframes headerGlow {
+    0%, 100% { box-shadow: 0 20px 60px rgba(99,102,241,0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
+    50% { box-shadow: 0 20px 80px rgba(168,85,247,0.3), inset 0 1px 0 rgba(255,255,255,0.15); }
+}
+
+@keyframes bgShift {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-50px, 50px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes titlePulse {
+    0%, 100% { letter-spacing: -0.5px; }
+    50% { letter-spacing: 0px; }
 }
 
 /* ─── Metric Cards ─── */
@@ -84,43 +126,62 @@ section[data-testid="stSidebar"] .block-container {
 }
 
 .metric-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 1.2rem 1.5rem;
-    transition: all 0.2s ease;
+    background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(168,85,247,0.05) 100%);
+    border: 2px solid rgba(99,102,241,0.2);
+    border-radius: 16px;
+    padding: 1.5rem 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shimmer 3s infinite;
 }
 
 .metric-card:hover {
-    border-color: rgba(99,102,241,0.4);
-    background: rgba(99,102,241,0.08);
-    transform: translateY(-2px);
+    border-color: rgba(99,102,241,0.6);
+    background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(168,85,247,0.1) 100%);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(99,102,241,0.25);
 }
 
 .metric-label {
     color: #64748b;
     font-size: 0.75rem;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
 }
 
 .metric-value {
     color: #e2e8f0;
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 1.8rem;
+    font-weight: 800;
     line-height: 1;
 }
 
 .metric-sub {
     color: #94a3b8;
     font-size: 0.75rem;
-    margin-top: 0.3rem;
+    margin-top: 0.5rem;
 }
 
 .metric-up { color: #34d399; }
 .metric-down { color: #f87171; }
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
 
 /* ─── Chat Container ─── */
 .chat-container {
@@ -245,18 +306,39 @@ section[data-testid="stSidebar"] .block-container {
 
 /* ─── Buttons ─── */
 .stButton > button {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%) !important;
     color: white !important;
     border: none !important;
-    border-radius: 10px !important;
-    font-weight: 600 !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
     font-family: 'Inter', sans-serif !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.95rem !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.stButton > button::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(255,255,255,0.5) !important;
+    transform: translate(-50%, -50%) !important;
+    transition: width 0.6s, height 0.6s !important;
 }
 
 .stButton > button:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 8px 25px rgba(99,102,241,0.4) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 40px rgba(99,102,241,0.5), 0 0 20px rgba(168,85,247,0.3) !important;
+}
+
+.stButton > button:hover::before {
+    width: 300px !important;
+    height: 300px !important;
 }
 
 /* ─── Divider ─── */
@@ -364,10 +446,56 @@ if not st.session_state.data_loaded:
 
 with st.sidebar:
     st.markdown("""
-    <div style="text-align:center; padding: 1rem 0 1.5rem;">
-        <div style="font-size: 2.5rem;">📊</div>
-        <div style="color: #a78bfa; font-weight: 700; font-size: 1.1rem; margin-top: 0.3rem;">BizIntel Agent</div>
-        <div style="color: #475569; font-size: 0.75rem;">Monday.com × Groq AI</div>
+    <style>
+        .sidebar-brand {
+            text-align: center;
+            padding: 1.5rem 1rem 2rem;
+            background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.1) 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(99,102,241,0.3);
+            margin-bottom: 1rem;
+            animation: sidebarGlow 3s ease-in-out infinite;
+        }
+        
+        .sidebar-brand-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+        
+        .sidebar-brand-title {
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+        
+        .sidebar-brand-subtitle {
+            color: #64748b;
+            font-size: 0.7rem;
+            margin-top: 0.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        @keyframes sidebarGlow {
+            0%, 100% { box-shadow: 0 8px 24px rgba(99,102,241,0.15); }
+            50% { box-shadow: 0 12px 32px rgba(168,85,247,0.25); }
+        }
+        
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+    </style>
+    <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">📊</div>
+        <div class="sidebar-brand-title">BizIntel Agent</div>
+        <div class="sidebar-brand-subtitle">Monday.com × Groq AI</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -415,9 +543,22 @@ with st.sidebar:
 # ─── Main Area ────────────────────────────────────────────────────────────────
 
 st.markdown("""
+<style>
+    .header-icon {
+        font-size: 2.8rem;
+        margin-bottom: 0.8rem;
+        animation: iconFloat 3s ease-in-out infinite;
+    }
+    
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>
 <div class="bi-header">
-    <h1>📊 BizIntel — Monday.com AI Agent</h1>
-    <p>Founder-level business intelligence powered by Groq AI · Real-time Monday.com data</p>
+    <div class="header-icon">📊</div>
+    <h1>🤖 BizIntel — Monday.com AI Agent</h1>
+    <p>Founder-level business intelligence powered by Groq AI · Real-time Monday.com data · Powered by Groq's Llama 3.3-70b</p>
 </div>
 """, unsafe_allow_html=True)
 

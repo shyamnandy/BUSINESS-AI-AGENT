@@ -308,6 +308,8 @@ if "wo_df" not in st.session_state:
     st.session_state.wo_df = None
 if "deals_df" not in st.session_state:
     st.session_state.deals_df = None
+if "connection_error" not in st.session_state:
+    st.session_state.connection_error = None
 
 # ─── Auto-Connect (reads secrets on first load) ───────────────────────────────
 
@@ -317,27 +319,43 @@ def _try_autoconnect():
         groq_key  = st.secrets.get("GROQ_API_KEY", "")
         wo_id     = st.secrets.get("WO_BOARD_ID", "")
         deals_id  = st.secrets.get("DEALS_BOARD_ID", "")
-        if token and groq_key and wo_id and deals_id:
-            os.environ["MONDAY_API_TOKEN"] = token
-            os.environ["GROQ_API_KEY"]     = groq_key
-            agent = BIAgent(wo_id, deals_id)
-            wo_df, deals_df = agent.load_data()
-            st.session_state.agent       = agent
-            st.session_state.wo_df       = wo_df
-            st.session_state.deals_df    = deals_df
-            st.session_state.data_loaded = True
-            st.session_state.messages    = [{
-                "role": "assistant",
-                "content": (
-                    f"Connected to Monday.com! Loaded **{len(wo_df)} work orders** "
-                    f"and **{len(deals_df)} deals**.\n\n"
-                    "I'm your BI analyst. Ask me anything — pipeline health, sector performance, "
-                    "revenue breakdown, at-risk deals — or click **Generate Leadership Brief** "
-                    "for an instant board-ready update."
-                )
-            }]
+        
+        # ─── Validate all required secrets are present ───────────────────────
+        missing_secrets = []
+        if not token:
+            missing_secrets.append("MONDAY_API_TOKEN")
+        if not groq_key:
+            missing_secrets.append("GROQ_API_KEY")
+        if not wo_id:
+            missing_secrets.append("WO_BOARD_ID")
+        if not deals_id:
+            missing_secrets.append("DEALS_BOARD_ID")
+        
+        if missing_secrets:
+            st.session_state.connection_error = f"Missing secrets: {', '.join(missing_secrets)}"
+            return
+        
+        os.environ["MONDAY_API_TOKEN"] = token
+        os.environ["GROQ_API_KEY"]     = groq_key
+        
+        agent = BIAgent(wo_id, deals_id)
+        wo_df, deals_df = agent.load_data()
+        st.session_state.agent       = agent
+        st.session_state.wo_df       = wo_df
+        st.session_state.deals_df    = deals_df
+        st.session_state.data_loaded = True
+        st.session_state.messages    = [{
+            "role": "assistant",
+            "content": (
+                f"Connected to Monday.com! Loaded **{len(wo_df)} work orders** "
+                f"and **{len(deals_df)} deals**.\n\n"
+                "I'm your BI analyst. Ask me anything — pipeline health, sector performance, "
+                "revenue breakdown, at-risk deals — or click **Generate Leadership Brief** "
+                "for an instant board-ready update."
+            )
+        }]
     except Exception as e:
-        st.error(f"Auto-connect failed: {e}")
+        st.session_state.connection_error = str(e)
 
 if not st.session_state.data_loaded:
     _try_autoconnect()
@@ -430,24 +448,47 @@ if st.session_state.data_loaded:
 # ─── Not Connected Banner ─────────────────────────────────────────────────────
 
 if not st.session_state.data_loaded:
-    st.markdown("""
-    <div style="
-        background: rgba(99,102,241,0.08);
-        border: 1px solid rgba(99,102,241,0.2);
-        border-radius: 12px;
-        padding: 2rem;
-        text-align: center;
-        margin: 2rem 0;
-    ">
-        <div style="font-size: 3rem; margin-bottom: 1rem;">⏳</div>
-        <div style="color: #a78bfa; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">
-            Connecting to Monday.com...
+    if st.session_state.connection_error:
+        st.markdown("""
+        <div style="
+            background: rgba(248,113,113,0.08);
+            border: 1px solid rgba(248,113,113,0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        ">
+            <div style="font-size: 1.5rem; margin-bottom: 1rem;">❌ Connection Failed</div>
+            <div style="color: #f87171; font-size: 0.95rem; margin-bottom: 1rem; font-family: 'Courier New', monospace;">
+                <strong>Error:</strong> """ + st.session_state.connection_error.replace("<", "&lt;").replace(">", "&gt;") + """
+            </div>
+            <div style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6;">
+                <strong>What to check:</strong><br>
+                ✓ Verify all API keys are set in .streamlit/secrets.toml (local) or deployment platform secrets<br>
+                ✓ Required secrets: <code>MONDAY_API_TOKEN</code>, <code>GROQ_API_KEY</code>, <code>WO_BOARD_ID</code>, <code>DEALS_BOARD_ID</code><br>
+                ✓ Check that Monday.com and Groq API keys are valid and not expired<br>
+                ✓ Ensure board IDs are correct and accessible with your API token
+            </div>
         </div>
-        <div style="color: #64748b; font-size: 0.9rem;">
-            Loading your boards automatically from configuration.
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div style="
+            background: rgba(99,102,241,0.08);
+            border: 1px solid rgba(99,102,241,0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        ">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">⏳</div>
+            <div style="color: #a78bfa; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">
+                Connecting to Monday.com...
+            </div>
+            <div style="color: #64748b; font-size: 0.9rem;">
+                Loading your boards automatically from configuration.
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
 # ─── Chat Interface ───────────────────────────────────────────────────────────
 

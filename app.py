@@ -566,7 +566,8 @@ section[data-testid="stSidebar"] .block-container {
 }
 
 /* ─── Buttons ─── */
-.stButton > button {
+.stButton > button,
+[data-testid="stFormSubmitButton"] > button {
     background: linear-gradient(135deg, #6366f1, #7c3aed) !important;
     color: white !important;
     border: none !important;
@@ -579,13 +580,15 @@ section[data-testid="stSidebar"] .block-container {
     letter-spacing: 0.01em !important;
 }
 
-.stButton > button:hover {
+.stButton > button:hover,
+[data-testid="stFormSubmitButton"] > button:hover {
     background: linear-gradient(135deg, #4f46e5, #6d28d9) !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 8px 24px rgba(99,102,241,0.45) !important;
 }
 
-.stButton > button:active {
+.stButton > button:active,
+[data-testid="stFormSubmitButton"] > button:active {
     transform: translateY(0) !important;
 }
 
@@ -1037,16 +1040,16 @@ if st.session_state.data_loaded:
     # ── Data Preview Expanders ──
     st.markdown("<div style='margin-top:1.5rem;'></div>", unsafe_allow_html=True)
 
-    with st.expander("🔍 Preview Work Orders Data"):
+    with st.expander(f"🔍 Preview Work Orders Data — all {len(st.session_state.wo_df)} records"):
         if st.session_state.wo_df is not None and not st.session_state.wo_df.empty:
             display_cols = [c for c in st.session_state.wo_df.columns if c != "_raw"]
-            st.dataframe(st.session_state.wo_df[display_cols].head(20), use_container_width=True)
+            st.dataframe(st.session_state.wo_df[display_cols], use_container_width=True)
         else:
             st.info("No work orders data loaded")
 
-    with st.expander("🔍 Preview Deals Data"):
+    with st.expander(f"🔍 Preview Deals Data — all {len(st.session_state.deals_df)} records"):
         if st.session_state.deals_df is not None and not st.session_state.deals_df.empty:
             display_cols = [c for c in st.session_state.deals_df.columns if c != "_raw"]
-            st.dataframe(st.session_state.deals_df[display_cols].head(20), use_container_width=True)
+            st.dataframe(st.session_state.deals_df[display_cols], use_container_width=True)
         else:
             st.info("No deals data loaded")

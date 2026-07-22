@@ -55,6 +55,29 @@ section[data-testid="stSidebar"] .block-container {
     padding-right: 0.75rem;
 }
 
+/* ─── Sidebar Toggle (Arrow) ─── */
+[data-testid="collapsedControl"] {
+    background: rgba(99,102,241,0.2) !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(99,102,241,0.5) !important;
+    margin: 10px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 0 15px rgba(99,102,241,0.4) !important;
+}
+
+[data-testid="collapsedControl"]:hover {
+    background: rgba(99,102,241,0.4) !important;
+    box-shadow: 0 0 25px rgba(99,102,241,0.7) !important;
+    transform: scale(1.15) !important;
+}
+
+[data-testid="collapsedControl"] svg {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    width: 28px !important;
+    height: 28px !important;
+}
+
 /* ─── Sidebar Brand ─── */
 .sidebar-logo {
     display: flex;
@@ -260,68 +283,6 @@ section[data-testid="stSidebar"] .block-container {
     z-index: 1;
 }
 
-/* ─── Metric Cards ─── */
-.metric-card {
-    background: rgba(22,27,39,0.7);
-    border: 1px solid rgba(99,102,241,0.12);
-    border-radius: 16px;
-    padding: 1.5rem;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-}
-
-.metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa);
-    opacity: 0;
-    transition: opacity 0.35s ease;
-}
-
-.metric-card:hover {
-    border-color: rgba(99,102,241,0.35);
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(99,102,241,0.15), 0 0 0 1px rgba(99,102,241,0.1);
-}
-
-.metric-card:hover::before { opacity: 1; }
-
-.metric-icon {
-    font-size: 1.4rem;
-    margin-bottom: 0.75rem;
-    display: block;
-}
-
-.metric-label {
-    color: #64748b;
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
-}
-
-.metric-value {
-    color: #e2e8f0;
-    font-size: 1.9rem;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -1px;
-}
-
-.metric-sub {
-    color: #475569;
-    font-size: 0.72rem;
-    margin-top: 0.5rem;
-    font-weight: 500;
-}
-
-.metric-up { color: #22c55e; font-weight: 700; }
-.metric-down { color: #ef4444; font-weight: 700; }
 
 /* ─── HERO CHAT SECTION ─── */
 .chat-hero-wrapper {
@@ -609,23 +570,6 @@ hr { border-color: rgba(99,102,241,0.1) !important; }
 [role="group"] * { color: #e2e8f0 !important; opacity: 1 !important; }
 [role="group"] p { color: #e2e8f0 !important; opacity: 1 !important; }
 
-/* ─── Loading Dots ─── */
-.loading-dot {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #6366f1;
-    animation: pulse 1.2s ease-in-out infinite;
-    margin: 0 2px;
-}
-.loading-dot:nth-child(2) { animation-delay: 0.2s; background: #8b5cf6; }
-.loading-dot:nth-child(3) { animation-delay: 0.4s; background: #a78bfa; }
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.3; transform: scale(0.75); }
-    50% { opacity: 1; transform: scale(1.1); }
-}
 
 /* ─── Tables ─── */
 .dataframe {
@@ -634,20 +578,6 @@ hr { border-color: rgba(99,102,241,0.1) !important; }
     border-radius: 12px !important;
 }
 
-/* ─── Status Badges ─── */
-.badge {
-    display: inline-block;
-    padding: 0.2rem 0.6rem;
-    border-radius: 6px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-.badge-green  { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
-.badge-yellow { background: rgba(251,191,36,0.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
-.badge-red    { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
-.badge-blue   { background: rgba(96,165,250,0.12);  color: #60a5fa; border: 1px solid rgba(96,165,250,0.25); }
 
 /* ─── Metric widget overrides ─── */
 [data-testid="stMetricValue"] {
